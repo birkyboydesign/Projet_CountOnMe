@@ -19,6 +19,7 @@ class Calculator {
     // MARK: - Properties
     weak var delegate: CalculatorDelegate?
 
+    /// String where elements are added and the n displayed.
     var stringToCalculate = "" {
         didSet {
             delegate?.displayResult(with: stringToCalculate)
@@ -27,35 +28,41 @@ class Calculator {
 
     // MARK: - Checks
 
-    /// Split a string in to parts contain in the array elements
+    /// Split a string into parts and appened to  elements array.
     private var elements: [String] {
         return stringToCalculate.split(separator: " ").map { "\($0)" }
     }
 
-    /// if the last elements is not and operand then the expression is correct and ready for calculation
+    /// Checks if the last elements is not an operand then the expression is ready for calculation
     private var expressionIsCorrect: Bool {
         return elements.last != "+" && elements.last != "-" && elements.last != "x" && elements.last != "/"
     }
 
-    /// if there are at least 3 elements, the nthere are enough elements to calculate a result
+    /// Checks if the elements array contain more than 3 indexes.
+    ///
+    /// If there are more than 3 elements, a calculation est permissible.
     private var expressionHaveEnoughElement: Bool {
         return elements.count >= 3
     }
 
-    /// If the last element is not an operand, then true can add and operand
+    /// Check If the last element is not an operand, then true can add and operand.
     private var canAddOperator: Bool {
         return elements.last != "+" && elements.last != "-" && elements.last != "x" && elements.last != "/"
     }
 
-    /// If the first index of the elements to calculate is NOT an equal sign, there is no result
+    /// Check If the first index of the elements to calculate is not an equal sign, then there is no result.
     private var expressionHaveResult: Bool {
         return elements.firstIndex(of: "=") != nil
     }
 
+    /// Checks if the string to be calculated contains only a zero.
+    ///
+    /// Usually the case when app is first launched or the reset button has been tapped.
     private var expressionIsZero: Bool {
         return elements.firstIndex(of: "0") != nil
     }
 
+    /// Checks if the string to be calculated contains a divider operand followed by a zero.
     private var isZeroDivision: Bool {
         if let index = elements.firstIndex(of: "/") {
             if elements[index + 1] == "0" {
@@ -67,13 +74,13 @@ class Calculator {
 
     // MARK: - Add Data
 
-    /// reset calculation
+    /// Reset calculation.
     func resetCalculation() {
         stringToCalculate = "0"
     }
 
-    /// Add number to the string to calculate
-    /// - Parameter number: String value passsed from number Button
+    /// Add number to the string to calculate.
+    /// - Parameter number: String value passsed from number button.
     func addNumber(with number: String) {
         if expressionHaveResult {
             resetCalculation()
@@ -84,9 +91,9 @@ class Calculator {
         stringToCalculate.append(number)
     }
 
-    /// Add operand to string to calculate
-    /// - Parameter operand: Openrand enum raw value
-    func addOperand(with operand:String) {
+    /// Add operand to string to calculate.
+    /// - Parameter operand: Title string value of the operand button pressed.
+    func addOperand(with operand: String) {
         if canAddOperator {
             stringToCalculate.append(operand)
         } else {
@@ -94,7 +101,7 @@ class Calculator {
         }
     }
 
-    /// Add a decimal point to string to calculate
+    /// Add a decimal point to string.
     func addDecimalPoint() {
         if expressionHaveResult {
             resetCalculation()
@@ -124,7 +131,7 @@ class Calculator {
             return
         }
         let result = calculateOperation(with: elements)
-        let formattedResult = formatResult(for: Float(result) ?? 0)
+        let formattedResult = formatResult(for: Float(result) ?? 0.0)
         stringToCalculate.append(" = \(formattedResult)")
     }
 
@@ -144,12 +151,11 @@ class Calculator {
             case "/": result = left / right
             default: result = 0.0
             }
-            
             operationsToReduce = Array(operationsToReduce.dropFirst(3))
             operationsToReduce.insert("\(result)", at: 0)
         }
         guard let operation = operationsToReduce.first else {
-            return ""
+            return "0"
         }
         return operation
     }
@@ -158,7 +164,7 @@ class Calculator {
 
     /// Format result displayed to the user. If result is a is whole number then no digiti is displayed.
     /// - Parameter value: Pass in a float value to be converted.
-    /// - Returns: Result value converted to a string
+    /// - Returns: Result value converted to a string.
     private func formatResult(for value: Float) -> String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal

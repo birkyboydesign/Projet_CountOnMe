@@ -12,49 +12,67 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var textView: UITextView!
 
-    private let calculator = Calculator()
+    // MARK: Property
     
-    // MARK: - View Lifecycle
+    private let calculator = Calculator()
+
+    // MARK:  View Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         calculator.delegate = self
     }
 
-    // MARK: - Actions
+    // MARK: Actions
 
+    /// Collection of number button actions.
+    ///
+    /// Button title label value is passed as a number.
+    /// - Parameter sender: number button.
     @IBAction func tappedNumberButton(_ sender: UIButton) {
         guard let numberText = sender.title(for: .normal) else {return}
         calculator.addNumber(with: numberText)
     }
-    
-    @IBAction func tappedAdditionButton(_ sender: UIButton) {
+
+    /// Collection of operand button actions.
+    ///
+    /// Button title label value is passed as an operand.
+    /// - Parameter sender: operand button
+    @IBAction func tappedOperandButton(_ sender: UIButton) {
         guard let operandText = sender.title(for: .normal) else {return}
         calculator.addOperand(with: " \(operandText) ")
     }
 
+    /// Button to calculate operation.
+    /// - Parameter sender: equal button.
     @IBAction func tappedEqualButton(_ sender: UIButton) {
         calculator.calculate()
     }
 
+    /// Resets calculation and display a zero in the textiew.
+    /// - Parameter sender: reset button.
     @IBAction func tappedResetButton(_ sender: Any) {
         calculator.resetCalculation()
     }
 
+    /// Adds a decimal point when user wants to make calculations with a decimal value.
+    /// - Parameter sender: decimal button.
     @IBAction func tappedDecimalButton(_ sender: Any) {
         calculator.addDecimalPoint()
     }
 }
 
+// MARK: - Extension
 extension ViewController: CalculatorDelegate {
 
-    // MARK: - Result Display
-    /// Display calculation result
-    /// - Parameter result: calculation result as string
+    /// Display calculation result.
+    /// - Parameter result: calculation result as string.
     func displayResult(with result: String) {
         textView.text = result
     }
 
-    // MARK: - Alert
+    /// Present an alert to the user, typically when an error occured.
+    /// - Parameter error: custom error from ErrorManager.
     func presentAlert(with error: CountError) {
         let alertVC = UIAlertController(title: "Oups !", message: error.description, preferredStyle: .alert)
         alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))

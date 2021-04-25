@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// Custom Errors.
 enum CountError: Error {
     case operandAlreadySet
     case incorrectExpression
