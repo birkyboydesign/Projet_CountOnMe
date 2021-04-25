@@ -21,6 +21,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         calculator.delegate = self
+        
     }
 
     // MARK: Actions
