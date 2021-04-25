@@ -12,6 +12,8 @@ enum CountError: Error {
     case operandAlreadySet
     case incorrectExpression
     case startNewCalculation
+    case zeroDivision
+    case resultAlreadyShowing
     
 }
 
@@ -24,6 +26,10 @@ extension CountError: CustomStringConvertible {
             return "Entrez une expression correcte !"
         case .startNewCalculation:
             return "Démarrez un nouveau calcul !"
+        case .zeroDivision:
+            return "Division par zéro impossible !"
+        case .resultAlreadyShowing:
+            return "Le resultat est déja affiché !"
         }
     }
 }

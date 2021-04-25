@@ -61,5 +61,33 @@ class CalculatorTests: XCTestCase {
         calculator.resetCalculation()
         XCTAssertEqual(calculator.stringToCalculate, "")
     }
+
+    func testGivenAStringWithANumber_WhenNothingToAddTo_thenNoResultWithEqualSign() {
+        calculator.addNumber(with: "2")
+        calculator.addOperand(with: .add)
+        calculator.calculate()
+        XCTAssertEqual(calculator.stringToCalculate, "2 + ")
+    }
+
+    func testGivenAStringWithANumber_WhenNothingToSubstractWith_thenNoResultWithEqualSign() {
+        calculator.addNumber(with: "2")
+        calculator.addOperand(with: .substract)
+        calculator.calculate()
+        XCTAssertEqual(calculator.stringToCalculate, "2 - ")
+    }
+
+    func testGivenAStringWithANumber_WhenNothingToMultiplyBy_thenNoResultWithEqualSign() {
+        calculator.addNumber(with: "2")
+        calculator.addOperand(with: .multiply)
+        calculator.calculate()
+        XCTAssertEqual(calculator.stringToCalculate, "2 x ")
+    }
+
+    func testGivenAStringWithANumber_WhenNothingToDivideBy_thenNoResultWithEqualSign() {
+        calculator.addNumber(with: "2")
+        calculator.addOperand(with: .divide)
+        calculator.calculate()
+        XCTAssertEqual(calculator.stringToCalculate, "2 / ")
+    }
 }
 

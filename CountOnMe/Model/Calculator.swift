@@ -9,13 +9,6 @@
 import Foundation
 import SwiftUI
 
-enum Operand: String {
-    case add = " + "
-    case substract = " - "
-    case multiply = " x "
-    case divide = " / "
-}
-
 protocol CalculatorDelegate: AnyObject {
     func presentAlert(with error: CountError)
     func displayResult(with result: String)
@@ -32,7 +25,7 @@ class Calculator {
         }
     }
 
-    // MARK: Error Checks
+    // MARK: - Checks
 
     /// Split a string in to parts contain in the array elements
     private var elements: [String] {
@@ -59,26 +52,49 @@ class Calculator {
         return elements.firstIndex(of: "=") != nil
     }
 
-    /// reset calculation
-    func resetCalculation() {
-        stringToCalculate = ""
+    private var expressionIsZero: Bool {
+        return elements.firstIndex(of: "0") != nil
     }
 
+    private var isZeroDivision: Bool {
+        if let index = elements.firstIndex(of: "/") {
+            if elements[index + 1] == "0" {
+                return true
+            }
+        }
+        return false
+    }
+
+    // MARK: - Add Data
+
+    /// reset calculation
+    func resetCalculation() {
+        stringToCalculate = "0"
+    }
+
+    /// Add number to the string to calculate
+    /// - Parameter number: String value passsed from number Button
     func addNumber(with number: String) {
         if expressionHaveResult {
             resetCalculation()
         }
+        if expressionIsZero {
+            stringToCalculate = ""
+        }
         stringToCalculate.append(number)
     }
 
-    func addOperand(with operand: Operand) {
+    /// Add operand to string to calculate
+    /// - Parameter operand: Openrand enum raw value
+    func addOperand(with operand:String) {
         if canAddOperator {
-            stringToCalculate.append(operand.rawValue)
+            stringToCalculate.append(operand)
         } else {
             delegate?.presentAlert(with: .operandAlreadySet)
         }
     }
 
+    /// Add a decimal point to string to calculate
     func addDecimalPoint() {
         if expressionHaveResult {
             resetCalculation()
@@ -86,7 +102,14 @@ class Calculator {
         stringToCalculate.append(".")
     }
 
+
+// MARK: - Calculations
+
     func calculate() {
+        if expressionHaveResult {
+            resetCalculation()
+            return
+        }
         guard expressionIsCorrect else {
             delegate?.presentAlert(with: .incorrectExpression)
             return
@@ -95,8 +118,14 @@ class Calculator {
             delegate?.presentAlert(with: .startNewCalculation)
             return
         }
+        guard !isZeroDivision else {
+            delegate?.presentAlert(with: .zeroDivision)
+            resetCalculation()
+            return
+        }
         let result = calculateOperation(with: elements)
-        stringToCalculate.append(" = \(result)")
+        let formattedResult = formatResult(for: Float(result) ?? 0)
+        stringToCalculate.append(" = \(formattedResult)")
     }
 
     private func calculateOperation(with operationsToReduce: [String]) -> String {
@@ -113,14 +142,32 @@ class Calculator {
             case "-": result = left - right
             case "x": result = left * right
             case "/": result = left / right
-            default: fatalError("Unknown operator !")
+            default: result = 0.0
             }
             
             operationsToReduce = Array(operationsToReduce.dropFirst(3))
             operationsToReduce.insert("\(result)", at: 0)
         }
-        guard let operation = operationsToReduce.first else {return ""}
+        guard let operation = operationsToReduce.first else {
+            return ""
+        }
         return operation
     }
-    
+
+    // MARK:  - Result Formatter
+
+    /// Format result displayed to the user. If result is a is whole number then no digiti is displayed.
+    /// - Parameter value: Pass in a float value to be converted.
+    /// - Returns: Result value converted to a string
+    private func formatResult(for value: Float) -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.maximumFractionDigits = 3
+        formatter.decimalSeparator = "."
+        formatter.groupingSeparator = ""
+        let number = NSNumber(value: value)
+        let formattedValue = formatter.string(from: number)!
+        return formattedValue
+    }
 }
+

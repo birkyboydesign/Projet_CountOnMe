@@ -11,12 +11,7 @@ import UIKit
 class ViewController: UIViewController {
 
     @IBOutlet weak var textView: UITextView!
-    @IBOutlet var numberButtons: [UIButton]!
-    @IBOutlet var operandButtons: [UIButton]!
-    @IBOutlet weak var resetButton: UIButton!
-    @IBOutlet weak var decimalButton: UIButton!
-    @IBOutlet weak var resultButton: UIButton!
-    
+
     private let calculator = Calculator()
     
     // MARK: - View Lifecycle
@@ -33,19 +28,8 @@ class ViewController: UIViewController {
     }
     
     @IBAction func tappedAdditionButton(_ sender: UIButton) {
-        calculator.addOperand(with: .add)
-    }
-    
-    @IBAction func tappedSubstractionButton(_ sender: UIButton) {
-        calculator.addOperand(with: .substract)
-    }
-
-    @IBAction func tappedMultiplyButton(_ sender: UIButton) {
-        calculator.addOperand(with: .multiply)
-    }
-
-    @IBAction func tappedDivideButton(_ sender: UIButton) {
-        calculator.addOperand(with: .divide)
+        guard let operandText = sender.title(for: .normal) else {return}
+        calculator.addOperand(with: " \(operandText) ")
     }
 
     @IBAction func tappedEqualButton(_ sender: UIButton) {
@@ -72,7 +56,7 @@ extension ViewController: CalculatorDelegate {
 
     // MARK: - Alert
     func presentAlert(with error: CountError) {
-        let alertVC = UIAlertController(title: "Zéro!", message: error.description, preferredStyle: .alert)
+        let alertVC = UIAlertController(title: "Oups !", message: error.description, preferredStyle: .alert)
         alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
         self.present(alertVC, animated: true, completion: nil)
     }
