@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 enum Operand: String {
     case add = " + "
@@ -25,7 +26,7 @@ class Calculator {
     // MARK: - Properties
     weak var delegate: CalculatorDelegate?
 
-    private var stringToCalculate = "" {
+    var stringToCalculate = "" {
         didSet {
             delegate?.displayResult(with: stringToCalculate)
         }
