@@ -12,19 +12,18 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var textView: UITextView!
 
-    // MARK: Property
+    // MARK: - Property
     
     private let calculator = Calculator()
 
-    // MARK:  View Lifecycle
+    // MARK:  - View Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         calculator.delegate = self
-        
     }
 
-    // MARK: Actions
+    // MARK: - Actions
 
     /// Collection of number button actions.
     ///
@@ -75,8 +74,12 @@ extension ViewController: CalculatorDelegate {
     /// Present an alert to the user, typically when an error occured.
     /// - Parameter error: custom error from ErrorManager.
     func presentAlert(with error: CountError) {
-        let alertVC = UIAlertController(title: "Oups !", message: error.description, preferredStyle: .alert)
-        alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+        let alertVC = UIAlertController(title: "Oups !",
+                                        message: error.description,
+                                        preferredStyle: .alert)
+        alertVC.addAction(UIAlertAction(title: "OK",
+                                        style: .cancel,
+                                        handler: nil))
         self.present(alertVC, animated: true, completion: nil)
     }
 }

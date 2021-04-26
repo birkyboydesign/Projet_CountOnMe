@@ -15,6 +15,8 @@
 		812BB42726300E5D00A566A2 /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812BB42626300E5D00A566A2 /* ErrorManager.swift */; };
 		812BB429263014D100A566A2 /* Calculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812BB428263014D100A566A2 /* Calculator.swift */; };
 		816C3E672635744D00C42615 /* CountOnMeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816C3E662635744D00C42615 /* CountOnMeTest.swift */; };
+		816C3E6F2635D68900C42615 /* FloatExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816C3E6E2635D68900C42615 /* FloatExtension.swift */; };
+		816C3E722636AB4500C42615 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816C3E712636AB4500C42615 /* StringExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +42,8 @@
 		816C3E642635744D00C42615 /* CountOnMeTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CountOnMeTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		816C3E662635744D00C42615 /* CountOnMeTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountOnMeTest.swift; sourceTree = "<group>"; };
 		816C3E682635744D00C42615 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		816C3E6E2635D68900C42615 /* FloatExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatExtension.swift; sourceTree = "<group>"; };
+		816C3E712636AB4500C42615 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +87,7 @@
 			children = (
 				1FA43BDE224E569A00F565CB /* Info.plist */,
 				812BB42526300CC000A566A2 /* Resources */,
+				816C3E702635D70700C42615 /* Extensions */,
 				812BB42226300CA600A566A2 /* Model */,
 				812BB42326300CAE00A566A2 /* View */,
 				812BB42426300CB600A566A2 /* Controller */,
@@ -132,6 +137,15 @@
 				816C3E682635744D00C42615 /* Info.plist */,
 			);
 			path = CountOnMeTest;
+			sourceTree = "<group>";
+		};
+		816C3E702635D70700C42615 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				816C3E6E2635D68900C42615 /* FloatExtension.swift */,
+				816C3E712636AB4500C42615 /* StringExtension.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -235,7 +249,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				816C3E6F2635D68900C42615 /* FloatExtension.swift in Sources */,
 				812BB42726300E5D00A566A2 /* ErrorManager.swift in Sources */,
+				816C3E722636AB4500C42615 /* StringExtension.swift in Sources */,
 				812BB429263014D100A566A2 /* Calculator.swift in Sources */,
 				1FA43BD5224E569900F565CB /* ViewController.swift in Sources */,
 				1FA43BD3224E569900F565CB /* AppDelegate.swift in Sources */,
