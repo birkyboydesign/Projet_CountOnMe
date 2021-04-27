@@ -9,24 +9,18 @@
 import Foundation
 
 /// Custom Errors.
-enum CountError: Error {
+enum CountError: LocalizedError {
     case operandAlreadySet
     case incorrectExpression
-    case startNewCalculation
     case zeroDivision
     case resultAlreadyShowing
-    
-}
 
-extension CountError: CustomStringConvertible {
-    public var description: String {
+     var description: String {
         switch self {
         case .operandAlreadySet:
             return "Un operateur est déja mis !"
         case .incorrectExpression:
             return "Entrez une expression correcte !"
-        case .startNewCalculation:
-            return "Démarrez un nouveau calcul !"
         case .zeroDivision:
             return "Division par zéro impossible !"
         case .resultAlreadyShowing:

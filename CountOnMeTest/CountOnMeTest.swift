@@ -18,9 +18,14 @@ class CalculatorTests: XCTestCase {
         calculator = Calculator()
     }
 
+    override func tearDown() {
+        super.tearDown()
+        calculator = nil
+    }
+
     // MARK: - Test with operand
 
-    func testGivenString_WhenAddingNumber_thenCalculate() {
+    func testGivenNumber_WhenAddingNumber_thenCalculate() {
         calculator.addNumber(with: "2")
         calculator.addOperand(with: " + ")
         calculator.addNumber(with: "2")
@@ -28,7 +33,7 @@ class CalculatorTests: XCTestCase {
         XCTAssertEqual(calculator.stringToCalculate, "2 + 2 = 4")
     }
 
-    func testGivenString_WhenSubstractingNumber_ThenCalculate() {
+    func testGivenNumber_WhenSubstractingNumber_ThenCalculate() {
         calculator.addNumber(with: "3")
         calculator.addOperand(with: " - ")
         calculator.addNumber(with: "2")
@@ -36,7 +41,7 @@ class CalculatorTests: XCTestCase {
         XCTAssertEqual(calculator.stringToCalculate, "3 - 2 = 1")
     }
 
-    func testGivenString_WhenMultiplyNumber_ThenCalculate() {
+    func testGivenNumber_WhenMultiplyNumber_ThenCalculate() {
         calculator.addNumber(with: "3")
         calculator.addOperand(with: " x ")
         calculator.addNumber(with: "3")
@@ -44,7 +49,7 @@ class CalculatorTests: XCTestCase {
         XCTAssertEqual(calculator.stringToCalculate, "3 x 3 = 9")
     }
 
-    func testGivenString_WhenDividingNumber_ThenCalculate() {
+    func testGivenNumber_WhenDividingNumber_ThenCalculate() {
         calculator.addNumber(with: "4")
         calculator.addOperand(with: " / ")
         calculator.addNumber(with: "2")
@@ -52,9 +57,9 @@ class CalculatorTests: XCTestCase {
         XCTAssertEqual(calculator.stringToCalculate, "4 / 2 = 2")
     }
 
-    func testGivenStringHasNumber_WhenAddingDecimalAndNumber_ThenShowDecimalNumberResult() {
+    func testGivenStringHasDecimalNumber_WhenAddingNumber_ThenShowDecimalNumberResult() {
         calculator.addNumber(with: "3")
-        calculator.addDecimalPoint()
+        calculator.addDecimalSeparator()
         calculator.addNumber(with: "5")
         calculator.addOperand(with: " + ")
         calculator.addNumber(with: "2")
@@ -62,69 +67,21 @@ class CalculatorTests: XCTestCase {
         XCTAssertEqual(calculator.stringToCalculate, "3.5 + 2 = 5.5")
     }
 
-    func testGivenStringHasDecimalNumber_WhenAddingDecimalAndNumber_ThenShowDecimalNumberResult() {
+    func testGivenDecimalNumber_WhenAddingDecimalAndNumber_ThenShowDecimalNumberResult() {
         calculator.addNumber(with: "3")
-        calculator.addDecimalPoint()
+        calculator.addDecimalSeparator()
         calculator.addNumber(with: "5")
         calculator.addOperand(with: " + ")
         calculator.addNumber(with: "2")
-        calculator.addDecimalPoint()
-        calculator.addNumber(with: "5")
+        calculator.addDecimalSeparator()
+        calculator.addNumber(with: "2")
         calculator.calculate()
-        XCTAssertEqual(calculator.stringToCalculate, "3.5 + 2.5 = 6")
-    }
-
-    // MARK: - Test without result
-
-    func testGivenEmptyString_WhenAddingNumber_ThenDisplayString() {
-        calculator.addNumber(with: "2")
-        XCTAssertEqual(calculator.stringToCalculate, "2")
-    }
-
-    func testGivenString_WhenAddingOperand_ThenDisplayString() {
-        calculator.addNumber(with: "2")
-        calculator.addOperand(with: " + ")
-        XCTAssertEqual(calculator.stringToCalculate, "2 + ")
-    }
-    
-    func testGivenString_WhenAddingDecimalPoint_ThenDisplayDecimalNumber() {
-        calculator.addNumber(with: "2")
-        calculator.addDecimalPoint()
-        calculator.addNumber(with: "2")
-        XCTAssertEqual(calculator.stringToCalculate, "2.2")
+        XCTAssertEqual(calculator.stringToCalculate, "3.5 + 2.2 = 5.7")
     }
 
     func testGivenClearButton_WhenClearButtonPressed_ThenStringIsZero() {
         calculator.resetCalculation()
         XCTAssertEqual(calculator.stringToCalculate, "0")
-    }
-
-    func testGivenAStringWithANumber_WhenNothingToAddTo_ThenNoResultWithEqualSign() {
-        calculator.addNumber(with: "2")
-        calculator.addOperand(with: " + ")
-        calculator.calculate()
-        XCTAssertEqual(calculator.stringToCalculate, "2 + ")
-    }
-
-    func testGivenAStringWithANumber_WhenNothingToSubstractWith_ThenNoResultWithEqualSign() {
-        calculator.addNumber(with: "2")
-        calculator.addOperand(with: " - ")
-        calculator.calculate()
-        XCTAssertEqual(calculator.stringToCalculate, "2 - ")
-    }
-
-    func testGivenAStringWithANumber_WhenNothingToMultiplyBy_ThenNoResultWithEqualSign() {
-        calculator.addNumber(with: "2")
-        calculator.addOperand(with: " x ")
-        calculator.calculate()
-        XCTAssertEqual(calculator.stringToCalculate, "2 x ")
-    }
-
-    func testGivenAStringWithANumber_WhenNothingToDivideBy_ThenNoResultWithEqualSign() {
-        calculator.addNumber(with: "2")
-        calculator.addOperand(with: " / ")
-        calculator.calculate()
-        XCTAssertEqual(calculator.stringToCalculate, "2 / ")
     }
 
     func testGivenStringHasResult_WhenAddingNumber_ThenShouldClear() {
@@ -141,18 +98,49 @@ class CalculatorTests: XCTestCase {
         calculator.addOperand(with: " + ")
         calculator.addNumber(with: "2")
         calculator.calculate()
-        calculator.addDecimalPoint()
+        calculator.addDecimalSeparator()
         XCTAssertEqual(calculator.stringToCalculate, "0")
     }
 
     func testGivenHasDecimalPoint_WhenAddingDecimalPoint_ThenNoChanges() {
         calculator.addNumber(with: "2")
-        calculator.addDecimalPoint()
-        calculator.addDecimalPoint()
+        calculator.addDecimalSeparator()
+        calculator.addDecimalSeparator()
         XCTAssertEqual(calculator.stringToCalculate, "2.")
     }
 
     // MARK: - Test when error
+    func testGivenNumber_WhenNothingToAddTo_ThenShowError() {
+        calculator.addNumber(with: "2")
+        calculator.addOperand(with: " + ")
+        calculator.calculate()
+        XCTAssertEqual(calculator.stringToCalculate, "2 + ")
+        XCTAssertEqual(calculator.error?.description, CountError.incorrectExpression.description)
+    }
+
+    func testGivenAStringWithANumber_WhenNothingToSubstractWith_ThenShowError() {
+        calculator.addNumber(with: "2")
+        calculator.addOperand(with: " - ")
+        calculator.calculate()
+        XCTAssertEqual(calculator.stringToCalculate, "2 - ")
+        XCTAssertEqual(calculator.error?.description, CountError.incorrectExpression.description)
+    }
+
+    func testGivenAStringWithANumber_WhenNothingToMultiplyBy_ThenShowError() {
+        calculator.addNumber(with: "2")
+        calculator.addOperand(with: " x ")
+        calculator.calculate()
+        XCTAssertEqual(calculator.stringToCalculate, "2 x ")
+        XCTAssertEqual(calculator.error?.description, CountError.incorrectExpression.description)
+    }
+
+    func testGivenAStringWithANumber_WhenNothingToDivideBy_ThenShowError() {
+        calculator.addNumber(with: "2")
+        calculator.addOperand(with: " / ")
+        calculator.calculate()
+        XCTAssertEqual(calculator.stringToCalculate, "2 / ")
+        XCTAssertEqual(calculator.error?.description, CountError.incorrectExpression.description)
+    }
 
     func testGivenStringHasNumber_WhenDivindingBy0_ThenShouldDisplayErrorAndResultEqual0() {
         calculator.addNumber(with: "2")
@@ -160,30 +148,31 @@ class CalculatorTests: XCTestCase {
         calculator.addNumber(with: "0")
         calculator.calculate()
         XCTAssertEqual(calculator.stringToCalculate, "0")
-        XCTAssertEqual(calculator.error, CountError.zeroDivision)
+        XCTAssertEqual(calculator.error?.description, CountError.zeroDivision.description)
     }
 
-    func testGivenStringHasNumber_WhenNoOperand_ThenDisplayError() {
+    func testGivenStringHasNumber_WhenNoOperand_ThenShowError() {
+
         calculator.addNumber(with: "2")
         calculator.calculate()
-        XCTAssertEqual(calculator.error, CountError.incorrectExpression)
+        XCTAssertEqual(calculator.error?.description, CountError.incorrectExpression.description)
     }
 
-    func testGivenStringHasOperand_WhenAddingOperand_ThenDisplayError() {
+    func testGivenStringHasOperand_WhenAddingOperand_ThenShowError() {
         calculator.addNumber(with: "2")
         calculator.addOperand(with: " + ")
         calculator.addOperand(with: " + ")
         calculator.calculate()
-        XCTAssertEqual(calculator.error, CountError.operandAlreadySet)
+        XCTAssertEqual(calculator.error?.description, CountError.incorrectExpression.description)
     }
 
-    func testGivenResultIsShowing_WhenAddingOperand_ThenDisplayError() {
+    func testGivenResultIsShowing_WhenAddingOperand_ThenShowError() {
         calculator.addNumber(with: "2")
         calculator.addOperand(with: " + ")
         calculator.addNumber(with: "2")
         calculator.calculate()
         calculator.addOperand(with: " + ")
-        XCTAssertEqual(calculator.error, CountError.resultAlreadyShowing)
+        XCTAssertEqual(calculator.error?.description, CountError.resultAlreadyShowing.description)
     }
 
     func testGivenResultGiven_WhenTappingResultButton_ThenShowError() {
@@ -192,19 +181,19 @@ class CalculatorTests: XCTestCase {
         calculator.addNumber(with: "2")
         calculator.calculate()
         calculator.calculate()
-        XCTAssertEqual(calculator.error, CountError.resultAlreadyShowing)
+        XCTAssertEqual(calculator.error?.description, CountError.resultAlreadyShowing.description)
     }
 
     func testGivenOneNumberHas2DecimalSeparator_WhenTappingResultButton_ThenShowError() {
         calculator.addNumber(with: "2")
-        calculator.addDecimalPoint()
+        calculator.addDecimalSeparator()
         calculator.addNumber(with: "2")
-        calculator.addDecimalPoint()
+        calculator.addDecimalSeparator()
         calculator.addNumber(with: "2")
         calculator.addOperand(with: " + ")
         calculator.addNumber(with: "2")
         calculator.calculate()
-        XCTAssertEqual(calculator.error, CountError.incorrectExpression)
+        XCTAssertEqual(calculator.error?.description, CountError.incorrectExpression.description)
     }
 
     func testGivenAnError_WhenErrorFailed_ThenStop() {
@@ -212,33 +201,4 @@ class CalculatorTests: XCTestCase {
         XCTAssertNil(calculator.error)
     }
 
-    func testGivenAnError_WhenDividingByZero_ThenGiveError() {
-        calculator.error = .zeroDivision
-        XCTAssertEqual(CountError.zeroDivision.description,
-                       "Division par zéro impossible !")
-    }
-
-    func testGivenAnError_WhenOperandSet_ThenGiveError() {
-        calculator.error = .operandAlreadySet
-        XCTAssertEqual(CountError.operandAlreadySet.description,
-                       "Un operateur est déja mis !")
-    }
-
-    func testGivenAnError_WhenIncorrectExpression_ThenGiveError() {
-        calculator.error = .incorrectExpression
-        XCTAssertEqual(CountError.incorrectExpression.description,
-                       "Entrez une expression correcte !")
-    }
-
-    func testGivenAnError_WhenResultAlreadyShowing_ThenGiveError() {
-        calculator.error = .resultAlreadyShowing
-        XCTAssertEqual(CountError.resultAlreadyShowing.description,
-                       "Le resultat est déja affiché !")
-    }
-
-    func testGivenAnError_WhenStartNewCalculation_ThenGiveError() {
-        calculator.error = .startNewCalculation
-        XCTAssertEqual(CountError.startNewCalculation.description,
-                       "Démarrez un nouveau calcul !")
-    }
 }

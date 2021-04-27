@@ -144,7 +144,7 @@ class Calculator {
     }
 
     /// Add a decimal point to string.
-    func addDecimalPoint() {
+    func addDecimalSeparator() {
         guard expressionHaveResult == false else {
             resetCalculation()
             return
@@ -168,7 +168,7 @@ class Calculator {
             return
         }
         guard expressionIsCorrect else {
-            error = .operandAlreadySet
+            error = .incorrectExpression
             return
         }
         guard expressionHaveEnoughElement else {

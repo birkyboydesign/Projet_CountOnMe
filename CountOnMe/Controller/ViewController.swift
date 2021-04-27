@@ -58,7 +58,7 @@ class ViewController: UIViewController {
     /// Adds a decimal point when user wants to make calculations with a decimal value.
     /// - Parameter sender: decimal button.
     @IBAction func tappedDecimalButton(_ sender: Any) {
-        calculator.addDecimalPoint()
+        calculator.addDecimalSeparator()
     }
 }
 
