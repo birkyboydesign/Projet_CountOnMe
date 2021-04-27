@@ -78,7 +78,7 @@ class Calculator {
         return elements.firstIndex(of: Operand.equal.rawValue) != nil
     }
 
-    /// Checks if the string to be calculated contains only a zero.
+    /// Checks if the string to be calculated contains  a zero.
     /// Usually the case when app is first launched or the reset button has been tapped.
     private var expressionIsZero: Bool {
         return elements.firstIndex(of: zeroValue) != nil
@@ -103,10 +103,11 @@ class Calculator {
 
     /// Checks if one of the numbers has a two decimal separator
     private var numberAlreadyHasDecimalSeparator: Bool {
-        for index in 0..<elements.count {
-            return elements[index].numberOfOccurrences(".") > 1
+        var validity = false
+        for index in 0..<elements.count where validity == false {
+            validity = elements[index].numberOfOccurrences(".") > 1
         }
-        return false
+        return validity
     }
     // MARK: - Reset
 
@@ -159,7 +160,7 @@ class Calculator {
     // MARK: - Calculations
 
     func calculate() {
-        guard numberAlreadyHasDecimalSeparator == false else {
+        if numberAlreadyHasDecimalSeparator {
             error = .incorrectExpression
             return
         }
@@ -180,6 +181,7 @@ class Calculator {
             resetCalculation()
             return
         }
+
         let result = calculateOperation(with: elements)
         if let resultToFloat = Float(result) {
             let formattedResult = resultToFloat.formatResult()
@@ -201,7 +203,7 @@ class Calculator {
                 case Operand.substract.rawValue: result = left - right
                 case Operand.multiply.rawValue : result = left * right
                 case Operand.divide.rawValue   : result = left / right
-                default: result = 0.0
+                default: return zeroValue
                 }
                 operationsToReduce = Array(operationsToReduce.dropFirst(3))
                 operationsToReduce.insert("\(result)", at: 0)

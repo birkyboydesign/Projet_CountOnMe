@@ -57,6 +57,20 @@ class CalculatorTests: XCTestCase {
         XCTAssertEqual(calculator.stringToCalculate, "4 / 2 = 2")
     }
 
+    func testGivenNumber_WhenCalulatingWithSeveralNumbersAndOperands_ThenShowResult() {
+        calculator.addNumber(with: "4")
+        calculator.addOperand(with: " / ")
+        calculator.addNumber(with: "2")
+        calculator.addOperand(with: " x ")
+        calculator.addNumber(with: "3")
+        calculator.addOperand(with: " - ")
+        calculator.addNumber(with: "2")
+        calculator.addOperand(with: " + ")
+        calculator.addNumber(with: "2")
+        calculator.calculate()
+        XCTAssertEqual(calculator.stringToCalculate, "4 / 2 x 3 - 2 + 2 = 6")
+    }
+
     func testGivenStringHasDecimalNumber_WhenAddingNumber_ThenShowDecimalNumberResult() {
         calculator.addNumber(with: "3")
         calculator.addDecimalSeparator()

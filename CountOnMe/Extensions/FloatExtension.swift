@@ -18,7 +18,7 @@ extension Float {
     func formatResult() -> String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
-        formatter.maximumFractionDigits = 3
+        formatter.maximumFractionDigits = 2
         formatter.decimalSeparator = "."
         formatter.groupingSeparator = ""
         let number = NSNumber(value: self)

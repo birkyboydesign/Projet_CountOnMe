@@ -74,7 +74,7 @@ extension ViewController: CalculatorDelegate {
     /// Present an alert to the user, typically when an error occured.
     /// - Parameter error: custom error from ErrorManager.
     func presentAlert(with error: CountError) {
-        let alertVC = UIAlertController(title: "Oups !",
+        let alertVC = UIAlertController(title: "Zéro!",
                                         message: error.description,
                                         preferredStyle: .alert)
         alertVC.addAction(UIAlertAction(title: "OK",
