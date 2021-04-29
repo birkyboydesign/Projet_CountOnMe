@@ -161,7 +161,7 @@ class CalculatorTests: XCTestCase {
         calculator.addOperand(with: " / ")
         calculator.addNumber(with: "0")
         calculator.calculate()
-        XCTAssertEqual(calculator.stringToCalculate, "0")
+        XCTAssertEqual(calculator.stringToCalculate, "2 / 0")
         XCTAssertEqual(calculator.error?.description, CountError.zeroDivision.description)
     }
 

@@ -178,7 +178,6 @@ class Calculator {
         }
         guard !isZeroDivision else {
             error = .zeroDivision
-            resetCalculation()
             return
         }
 
@@ -189,14 +188,27 @@ class Calculator {
         }
     }
 
+    /// Sorts calculation by operand priorites.
+    /// look for the the first index where the operand x or / is present
+    /// - Parameter elements: Pass in an array of string to use for calculation
+    /// - Returns: index of the operand
+    private func sortCalculationByPriority(for elements: [String]) -> Int {
+        if let index = elements.firstIndex(where: { $0 == Operand.multiply.rawValue ||
+                                                $0 == Operand.divide.rawValue }) {
+            return index
+        }
+        return 1
+    }
+
     private func calculateOperation(with operationsToReduce: [String]) -> String {
         // Iterate over operations while an operand still here
         var operationsToReduce = operationsToReduce
         while operationsToReduce.count > 1 {
-
-            let operand = operationsToReduce[1]
-            if let left = Float(operationsToReduce[0]),
-               let right = Float(operationsToReduce[2]) {
+            // Set the index in operand priority
+            let index = sortCalculationByPriority(for: operationsToReduce)
+            let operand = operationsToReduce[index]
+            if let left = Float(operationsToReduce[index - 1]),
+               let right = Float(operationsToReduce[index + 1]) {
                 let result: Float
                 switch operand {
                 case Operand.add.rawValue      : result = left + right
@@ -205,8 +217,12 @@ class Calculator {
                 case Operand.divide.rawValue   : result = left / right
                 default: return zeroValue
                 }
-                operationsToReduce = Array(operationsToReduce.dropFirst(3))
-                operationsToReduce.insert("\(result)", at: 0)
+                // replace the value at index before the operand with result
+                operationsToReduce[index - 1] = "\(result)"
+                // remove value after the operand
+                operationsToReduce.remove(at: index + 1)
+                // remove the operand
+                operationsToReduce.remove(at: index)
             }
         }
         guard let operation = operationsToReduce.first else {

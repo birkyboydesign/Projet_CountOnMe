@@ -21,18 +21,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="vGF-ZK-4xd">
-                                <rect key="frame" x="10" y="44" width="408" height="838"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="vGF-ZK-4xd">
+                                <rect key="frame" x="10" y="54" width="408" height="828"/>
                                 <subviews>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" editable="NO" text="0" textAlignment="right" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T2H-yn-nBB">
-                                        <rect key="frame" x="0.0" y="0.0" width="408" height="164"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="408" height="337"/>
                                         <color key="backgroundColor" red="0.24527746819999999" green="0.53481305040000005" blue="0.58749136739999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="60"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="top" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="isI-Gg-Iye">
-                                        <rect key="frame" x="0.0" y="194" width="408" height="480"/>
+                                        <rect key="frame" x="0.0" y="352" width="408" height="327"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="U2a-5D-kgc">
                                                 <rect key="frame" x="0.0" y="0.0" width="130.66666666666666" height="200"/>
@@ -184,7 +184,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="ogr-Aw-e1h">
-                                        <rect key="frame" x="0.0" y="704" width="408" height="134"/>
+                                        <rect key="frame" x="0.0" y="694" width="408" height="134"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="hjQ-T0-6R8">
                                                 <rect key="frame" x="0.0" y="0.0" width="130.66666666666666" height="134"/>
@@ -260,9 +260,9 @@
                         <color key="backgroundColor" red="0.87536688539999996" green="0.84808511389999996" blue="0.83804947389999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="AWJ-Vl-uau" firstAttribute="trailing" secondItem="vGF-ZK-4xd" secondAttribute="trailing" constant="10" id="Hyf-13-1md"/>
-                            <constraint firstItem="vGF-ZK-4xd" firstAttribute="top" secondItem="AWJ-Vl-uau" secondAttribute="top" id="PaE-9k-6in"/>
+                            <constraint firstItem="vGF-ZK-4xd" firstAttribute="top" secondItem="AWJ-Vl-uau" secondAttribute="top" constant="10" id="PaE-9k-6in"/>
                             <constraint firstItem="vGF-ZK-4xd" firstAttribute="leading" secondItem="AWJ-Vl-uau" secondAttribute="leading" constant="10" id="b3v-JP-NEo"/>
-                            <constraint firstItem="AWJ-Vl-uau" firstAttribute="bottom" secondItem="vGF-ZK-4xd" secondAttribute="bottom" constant="10" id="dcc-ZU-Q06"/>
+                            <constraint firstItem="AWJ-Vl-uau" firstAttribute="bottom" secondItem="vGF-ZK-4xd" secondAttribute="bottom" constant="10" id="x7B-nf-OcP"/>
                         </constraints>
                     </view>
                     <connections>
