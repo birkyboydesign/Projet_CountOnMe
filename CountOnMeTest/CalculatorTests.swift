@@ -1,6 +1,6 @@
 //
-//  CountOnMeTest.swift
-//  CountOnMeTest
+//  CalculatorTests.swift
+//  CalculatorTests
 //
 //  Created by Birkyboy on 25/04/2021.
 //  Copyright © 2021 Vincent Saluzzo. All rights reserved.
@@ -29,37 +29,41 @@ class CalculatorTests: XCTestCase {
         calculator.addNumber(with: "2")
         calculator.addOperand(with: " + ")
         calculator.addNumber(with: "2")
-        calculator.calculate()
-        XCTAssertEqual(calculator.stringToCalculate, "2 + 2 = 4")
+        calculator.calculatationRequest()
+        let result = "2 + 2 = 4"
+        XCTAssertEqual(calculator.stringToCalculate, result)
     }
 
     func testGivenNumber_WhenSubstractingNumber_ThenCalculate() {
         calculator.addNumber(with: "3")
         calculator.addOperand(with: " - ")
         calculator.addNumber(with: "2")
-        calculator.calculate()
-        XCTAssertEqual(calculator.stringToCalculate, "3 - 2 = 1")
+        calculator.calculatationRequest()
+        let result = "3 - 2 = 1"
+        XCTAssertEqual(calculator.stringToCalculate, result)
     }
 
     func testGivenNumber_WhenMultiplyNumber_ThenCalculate() {
         calculator.addNumber(with: "3")
         calculator.addOperand(with: " x ")
         calculator.addNumber(with: "3")
-        calculator.calculate()
-        XCTAssertEqual(calculator.stringToCalculate, "3 x 3 = 9")
+        calculator.calculatationRequest()
+        let result = "3 x 3 = 9"
+        XCTAssertEqual(calculator.stringToCalculate, result)
     }
 
     func testGivenNumber_WhenDividingNumber_ThenCalculate() {
         calculator.addNumber(with: "4")
-        calculator.addOperand(with: " / ")
+        calculator.addOperand(with: " ÷ ")
         calculator.addNumber(with: "2")
-        calculator.calculate()
-        XCTAssertEqual(calculator.stringToCalculate, "4 / 2 = 2")
+        calculator.calculatationRequest()
+        let result = "4 ÷ 2 = 2"
+        XCTAssertEqual(calculator.stringToCalculate, result)
     }
 
     func testGivenNumber_WhenCalulatingWithSeveralNumbersAndOperands_ThenShowResult() {
         calculator.addNumber(with: "4")
-        calculator.addOperand(with: " / ")
+        calculator.addOperand(with: " ÷ ")
         calculator.addNumber(with: "2")
         calculator.addOperand(with: " x ")
         calculator.addNumber(with: "3")
@@ -67,8 +71,9 @@ class CalculatorTests: XCTestCase {
         calculator.addNumber(with: "2")
         calculator.addOperand(with: " + ")
         calculator.addNumber(with: "2")
-        calculator.calculate()
-        XCTAssertEqual(calculator.stringToCalculate, "4 / 2 x 3 - 2 + 2 = 6")
+        calculator.calculatationRequest()
+        let result = "4 ÷ 2 x 3 - 2 + 2 = 6"
+        XCTAssertEqual(calculator.stringToCalculate, result)
     }
 
     func testGivenStringHasDecimalNumber_WhenAddingNumber_ThenShowDecimalNumberResult() {
@@ -77,8 +82,9 @@ class CalculatorTests: XCTestCase {
         calculator.addNumber(with: "5")
         calculator.addOperand(with: " + ")
         calculator.addNumber(with: "2")
-        calculator.calculate()
-        XCTAssertEqual(calculator.stringToCalculate, "3.5 + 2 = 5.5")
+        calculator.calculatationRequest()
+        let result = "3.5 + 2 = 5.5"
+        XCTAssertEqual(calculator.stringToCalculate, result)
     }
 
     func testGivenDecimalNumber_WhenAddingDecimalAndNumber_ThenShowDecimalNumberResult() {
@@ -89,8 +95,9 @@ class CalculatorTests: XCTestCase {
         calculator.addNumber(with: "2")
         calculator.addDecimalSeparator()
         calculator.addNumber(with: "2")
-        calculator.calculate()
-        XCTAssertEqual(calculator.stringToCalculate, "3.5 + 2.2 = 5.7")
+        calculator.calculatationRequest()
+        let result = "3.5 + 2.2 = 5.7"
+        XCTAssertEqual(calculator.stringToCalculate, result)
     }
 
     func testGivenClearButton_WhenClearButtonPressed_ThenStringIsZero() {
@@ -102,7 +109,7 @@ class CalculatorTests: XCTestCase {
         calculator.addNumber(with: "2")
         calculator.addOperand(with: " + ")
         calculator.addNumber(with: "2")
-        calculator.calculate()
+        calculator.calculatationRequest()
         calculator.addNumber(with: "2")
         XCTAssertEqual(calculator.stringToCalculate, "2")
     }
@@ -111,7 +118,7 @@ class CalculatorTests: XCTestCase {
         calculator.addNumber(with: "2")
         calculator.addOperand(with: " + ")
         calculator.addNumber(with: "2")
-        calculator.calculate()
+        calculator.calculatationRequest()
         calculator.addDecimalSeparator()
         XCTAssertEqual(calculator.stringToCalculate, "0")
     }
@@ -124,10 +131,11 @@ class CalculatorTests: XCTestCase {
     }
 
     // MARK: - Test when error
+
     func testGivenNumber_WhenNothingToAddTo_ThenShowError() {
         calculator.addNumber(with: "2")
         calculator.addOperand(with: " + ")
-        calculator.calculate()
+        calculator.calculatationRequest()
         XCTAssertEqual(calculator.stringToCalculate, "2 + ")
         XCTAssertEqual(calculator.error?.description, CountError.incorrectExpression.description)
     }
@@ -135,7 +143,7 @@ class CalculatorTests: XCTestCase {
     func testGivenAStringWithANumber_WhenNothingToSubstractWith_ThenShowError() {
         calculator.addNumber(with: "2")
         calculator.addOperand(with: " - ")
-        calculator.calculate()
+        calculator.calculatationRequest()
         XCTAssertEqual(calculator.stringToCalculate, "2 - ")
         XCTAssertEqual(calculator.error?.description, CountError.incorrectExpression.description)
     }
@@ -143,32 +151,31 @@ class CalculatorTests: XCTestCase {
     func testGivenAStringWithANumber_WhenNothingToMultiplyBy_ThenShowError() {
         calculator.addNumber(with: "2")
         calculator.addOperand(with: " x ")
-        calculator.calculate()
+        calculator.calculatationRequest()
         XCTAssertEqual(calculator.stringToCalculate, "2 x ")
         XCTAssertEqual(calculator.error?.description, CountError.incorrectExpression.description)
     }
 
     func testGivenAStringWithANumber_WhenNothingToDivideBy_ThenShowError() {
         calculator.addNumber(with: "2")
-        calculator.addOperand(with: " / ")
-        calculator.calculate()
-        XCTAssertEqual(calculator.stringToCalculate, "2 / ")
+        calculator.addOperand(with: " ÷ ")
+        calculator.calculatationRequest()
+        XCTAssertEqual(calculator.stringToCalculate, "2 ÷ ")
         XCTAssertEqual(calculator.error?.description, CountError.incorrectExpression.description)
     }
 
     func testGivenStringHasNumber_WhenDivindingBy0_ThenShouldDisplayErrorAndResultEqual0() {
         calculator.addNumber(with: "2")
-        calculator.addOperand(with: " / ")
+        calculator.addOperand(with: " ÷ ")
         calculator.addNumber(with: "0")
-        calculator.calculate()
-        XCTAssertEqual(calculator.stringToCalculate, "2 / 0")
+        calculator.calculatationRequest()
+        XCTAssertEqual(calculator.stringToCalculate, "2 ÷ 0")
         XCTAssertEqual(calculator.error?.description, CountError.zeroDivision.description)
     }
 
     func testGivenStringHasNumber_WhenNoOperand_ThenShowError() {
-
         calculator.addNumber(with: "2")
-        calculator.calculate()
+        calculator.calculatationRequest()
         XCTAssertEqual(calculator.error?.description, CountError.incorrectExpression.description)
     }
 
@@ -176,15 +183,14 @@ class CalculatorTests: XCTestCase {
         calculator.addNumber(with: "2")
         calculator.addOperand(with: " + ")
         calculator.addOperand(with: " + ")
-        calculator.calculate()
-        XCTAssertEqual(calculator.error?.description, CountError.incorrectExpression.description)
+        XCTAssertEqual(calculator.error?.description, CountError.operandAlreadySet.description)
     }
 
     func testGivenResultIsShowing_WhenAddingOperand_ThenShowError() {
         calculator.addNumber(with: "2")
         calculator.addOperand(with: " + ")
         calculator.addNumber(with: "2")
-        calculator.calculate()
+        calculator.calculatationRequest()
         calculator.addOperand(with: " + ")
         XCTAssertEqual(calculator.error?.description, CountError.resultAlreadyShowing.description)
     }
@@ -193,8 +199,8 @@ class CalculatorTests: XCTestCase {
         calculator.addNumber(with: "2")
         calculator.addOperand(with: " + ")
         calculator.addNumber(with: "2")
-        calculator.calculate()
-        calculator.calculate()
+        calculator.calculatationRequest()
+        calculator.calculatationRequest()
         XCTAssertEqual(calculator.error?.description, CountError.resultAlreadyShowing.description)
     }
 
@@ -206,7 +212,7 @@ class CalculatorTests: XCTestCase {
         calculator.addNumber(with: "2")
         calculator.addOperand(with: " + ")
         calculator.addNumber(with: "2")
-        calculator.calculate()
+        calculator.calculatationRequest()
         XCTAssertEqual(calculator.error?.description, CountError.incorrectExpression.description)
     }
 

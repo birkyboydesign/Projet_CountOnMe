@@ -14,29 +14,22 @@ protocol CalculatorDelegate: AnyObject {
     func displayResult(with result: String)
 }
 
-enum Operand: String {
-    case add       = "+"
-    case multiply  = "x"
-    case divide    = "/"
-    case substract = "-"
-    case equal     = "="
-}
-
 class Calculator {
 
     // MARK: - Properties
-
     weak var delegate: CalculatorDelegate?
     private let zeroValue = "0"
     private let decimalSeparator = "."
 
-    /// String where elements are added and the n displayed.
+    /// String where elements are added.
+    /// Updates the UI via protocol delagate.
     var stringToCalculate = "" {
         didSet {
             delegate?.displayResult(with: stringToCalculate)
         }
     }
 
+    /// Custom errors, update the UI via protocol delgate if error occurs.
     var error: CountError? {
         didSet {
             guard let error = error else {return}
@@ -94,8 +87,6 @@ class Calculator {
         return false
     }
 
-    // MARK: Decimal seprator checks
-
     /// Checks if a decimal separator is already set for the last number entered
     private var decimalSeparatorAlreadySet: Bool {
         return stringToCalculate.last == "."
@@ -108,12 +99,6 @@ class Calculator {
             validity = elements[index].numberOfOccurrences(".") > 1
         }
         return validity
-    }
-    // MARK: - Reset
-
-    /// Reset calculation.
-    func resetCalculation() {
-        stringToCalculate = zeroValue
     }
 
     // MARK: - Add Data
@@ -159,7 +144,8 @@ class Calculator {
 
     // MARK: - Calculations
 
-    func calculate() {
+    /// Request a calculation and update the string to calculate with result
+    func calculatationRequest() {
         if numberAlreadyHasDecimalSeparator {
             error = .incorrectExpression
             return
@@ -188,23 +174,28 @@ class Calculator {
         }
     }
 
-    /// Sorts calculation by operand priorites.
-    /// look for the the first index where the operand x or / is present
-    /// - Parameter elements: Pass in an array of string to use for calculation
-    /// - Returns: index of the operand
-    private func sortCalculationByPriority(for elements: [String]) -> Int {
-        if let index = elements.firstIndex(where: { $0 == Operand.multiply.rawValue ||
-                                                $0 == Operand.divide.rawValue }) {
+    /// Iterate thru array of strings and search for the first index where the operand 'x' or '÷' is present.
+    ///
+    /// If no 'x' or '÷' operand found, returns default operand index of 1.
+    /// - Parameter operationsToReduce: Pass in an array of string to use for calculation.
+    /// - Returns: Int index of the operand.
+    private func sortCalculationByPriority(for operationsToReduce: [String]) -> Int {
+        if let index = operationsToReduce.firstIndex(where: { $0 == Operand.multiply.rawValue ||
+                                                        $0 == Operand.divide.rawValue }) {
             return index
         }
         return 1
     }
 
+    /// Iterate thru an array of string to perform calculations.
+    ///
+    /// Sort Calculation by operand priority, divisions and multiplications are perfomed first.
+    /// - Parameter operationsToReduce: Array of strings.
+    /// - Returns: Result as a string.
     private func calculateOperation(with operationsToReduce: [String]) -> String {
-        // Iterate over operations while an operand still here
+        // Iterate over operations while an operand present.
         var operationsToReduce = operationsToReduce
         while operationsToReduce.count > 1 {
-            // Set the index in operand priority
             let index = sortCalculationByPriority(for: operationsToReduce)
             let operand = operationsToReduce[index]
             if let left = Float(operationsToReduce[index - 1]),
@@ -217,11 +208,11 @@ class Calculator {
                 case Operand.divide.rawValue   : result = left / right
                 default: return zeroValue
                 }
-                // replace the value at index before the operand with result
+                // Replace the value at operand index - 1 with the result.
                 operationsToReduce[index - 1] = "\(result)"
-                // remove value after the operand
+                // Remove value after the operand at index + 1.
                 operationsToReduce.remove(at: index + 1)
-                // remove the operand
+                // Remove the operand at index.
                 operationsToReduce.remove(at: index)
             }
         }
@@ -231,5 +222,8 @@ class Calculator {
         return operation
     }
 
+    /// Reset calculation by setting the stringToCalculate to zero.
+    func resetCalculation() {
+        stringToCalculate = zeroValue
+    }
 }
-

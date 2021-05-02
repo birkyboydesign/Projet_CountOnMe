@@ -46,7 +46,7 @@ class ViewController: UIViewController {
     /// Button to calculate operation.
     /// - Parameter sender: equal button.
     @IBAction func tappedEqualButton(_ sender: UIButton) {
-        calculator.calculate()
+        calculator.calculatationRequest()
     }
 
     /// Resets calculation and display a zero in the textiew.
@@ -71,8 +71,8 @@ extension ViewController: CalculatorDelegate {
         textView.text = result
     }
 
-    /// Present an alert to the user, typically when an error occured.
-    /// - Parameter error: custom error from ErrorManager.
+    /// Present an alert to the user  when an error occured.
+    /// - Parameter error: custom error from Errors.
     func presentAlert(with error: CountError) {
         let alertVC = UIAlertController(title: "Zéro!",
                                         message: error.description,
