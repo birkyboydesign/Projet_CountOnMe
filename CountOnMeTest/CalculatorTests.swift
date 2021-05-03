@@ -26,10 +26,13 @@ class CalculatorTests: XCTestCase {
     // MARK: - Test with operand
 
     func testGivenNumber_WhenAddingNumber_thenCalculate() {
+        // Given
         sut.addNumber(with: "2")
+        // When
         sut.addOperand(with: " + ")
         sut.addNumber(with: "2")
         sut.calculatationRequest()
+        // Then
         let result = "2 + 2 = 4"
         XCTAssertEqual(sut.stringToCalculate, result)
     }
@@ -100,7 +103,8 @@ class CalculatorTests: XCTestCase {
         XCTAssertEqual(sut.stringToCalculate, result)
     }
 
-    func testGivenClearButton_WhenClearButtonPressed_ThenStringIsZero() {
+    func testGivenResultShowing_WhenClearButtonPressed_ThenStringIsZero() {
+        sut.stringToCalculate = "2 + 2 = 4"
         sut.resetCalculation()
         XCTAssertEqual(sut.stringToCalculate, "0")
     }
