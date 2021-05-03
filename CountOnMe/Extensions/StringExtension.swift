@@ -10,11 +10,11 @@ import Foundation
 
 extension String {
 
-    /// This extension is used to count if the decimal separator is present several times in an element.
+    /// Count how many time a character is present in a string.
     /// - Parameter string: Pass in the number string to check.
     /// - Returns: Number of decimal separator present.
-    public func numberOfOccurrences(_ string: String) -> Int {
-        return components(separatedBy: string).count - 1
+    public func numberOfOccurrences(of character: String) -> Int {
+        return components(separatedBy: character).count - 1
     }
 
 }

@@ -45,8 +45,6 @@
 		816C3E682635744D00C42615 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		816C3E6E2635D68900C42615 /* FloatExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatExtension.swift; sourceTree = "<group>"; };
 		816C3E712636AB4500C42615 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
-		81C764F3263D90CA00AA611D /* CountOnMeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountOnMeUITests.swift; sourceTree = "<group>"; };
-		81C764F5263D90CA00AA611D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		81C764FB263E81A300AA611D /* Operands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Operands.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -73,7 +71,6 @@
 			children = (
 				1FA43BD1224E569900F565CB /* CountOnMe */,
 				816C3E652635744D00C42615 /* CountOnMeTest */,
-				81C764F2263D90CA00AA611D /* CountOnMeUITests */,
 				1FA43BD0224E569900F565CB /* Products */,
 			);
 			sourceTree = "<group>";
@@ -152,15 +149,6 @@
 				816C3E712636AB4500C42615 /* StringExtension.swift */,
 			);
 			path = Extensions;
-			sourceTree = "<group>";
-		};
-		81C764F2263D90CA00AA611D /* CountOnMeUITests */ = {
-			isa = PBXGroup;
-			children = (
-				81C764F3263D90CA00AA611D /* CountOnMeUITests.swift */,
-				81C764F5263D90CA00AA611D /* Info.plist */,
-			);
-			path = CountOnMeUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

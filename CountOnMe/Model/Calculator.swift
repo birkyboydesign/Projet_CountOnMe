@@ -21,7 +21,7 @@ class Calculator {
     private let zeroValue = "0"
     private let decimalSeparator = "."
 
-    /// String where elements are added.
+    /// String containing elements to calculate.
     /// Updates the UI via protocol delagate.
     var stringToCalculate = "" {
         didSet {
@@ -37,14 +37,14 @@ class Calculator {
         }
     }
 
-    /// Split a string into parts and appened to  elements array.
+    /// Split string into parts and append to elements array.
     private var elements: [String] {
         return stringToCalculate.split(separator: " ").map { "\($0)" }
     }
 
     // MARK: - Checks
 
-    /// Checks if the last elements is not an operand then the expression is ready for calculation
+    /// Checks if the last value of elements array is an operand.
     private var expressionIsCorrect: Bool {
         return elements.last != Operand.add.rawValue &&
             elements.last != Operand.substract.rawValue &&
@@ -53,17 +53,8 @@ class Calculator {
     }
 
     /// Checks if the elements array contain more than 3 indexes.
-    /// If there are more than 3 elements, a calculation est permissible.
     private var expressionHaveEnoughElement: Bool {
         return elements.count >= 3
-    }
-
-    /// Check If the last element is not an operand, then true can add and operand.
-    private var canAddOperator: Bool {
-        return elements.last != Operand.add.rawValue &&
-            elements.last != Operand.substract.rawValue &&
-            elements.last != Operand.multiply.rawValue &&
-            elements.last != Operand.divide.rawValue
     }
 
     /// Check If the first index of the elements to calculate is not an equal sign, then there is no result.
@@ -96,14 +87,14 @@ class Calculator {
     private var numberAlreadyHasDecimalSeparator: Bool {
         var validity = false
         for index in 0..<elements.count where validity == false {
-            validity = elements[index].numberOfOccurrences(".") > 1
+            validity = elements[index].numberOfOccurrences(of: decimalSeparator) > 1
         }
         return validity
     }
 
     // MARK: - Add Data
 
-    /// Add number to the string to calculate.
+    /// Add number to the string to be calculated.
     /// - Parameter number: String value passsed from number button.
     func addNumber(with number: String) {
         if expressionHaveResult {
@@ -115,29 +106,24 @@ class Calculator {
         stringToCalculate.append(number)
     }
 
-    /// Add operand to string to calculate.
-    /// - Parameter operand: Title string value of the operand button pressed.
+    /// Add operand to string to be calculated.
+    /// - Parameter operand: String value of the operand button pressed.
     func addOperand(with operand: String) {
-        guard expressionHaveResult == false else {
-            error = .resultAlreadyShowing
-            return
+        guard !expressionHaveResult else {
+            return error = .resultAlreadyShowing
         }
-        guard canAddOperator else {
-            error = .operandAlreadySet
-            return
+        guard expressionIsCorrect else {
+            return error = .operandAlreadySet
         }
         stringToCalculate.append(operand)
     }
 
     /// Add a decimal point to string.
     func addDecimalSeparator() {
-        guard expressionHaveResult == false else {
-            resetCalculation()
-            return
+        guard !expressionHaveResult else {
+            return resetCalculation()
         }
-        guard decimalSeparatorAlreadySet == false else {
-            return
-        }
+        guard !decimalSeparatorAlreadySet else { return }
         stringToCalculate.append(decimalSeparator)
     }
 
@@ -146,25 +132,20 @@ class Calculator {
 
     /// Request a calculation and update the string to calculate with result
     func calculatationRequest() {
-        if numberAlreadyHasDecimalSeparator {
-            error = .incorrectExpression
-            return
+        guard !numberAlreadyHasDecimalSeparator else {
+            return error = .incorrectExpression
         }
-        if expressionHaveResult {
-            error = .resultAlreadyShowing
-            return
+        guard !expressionHaveResult else {
+            return error = .resultAlreadyShowing
         }
         guard expressionIsCorrect else {
-            error = .incorrectExpression
-            return
+            return error = .incorrectExpression
         }
         guard expressionHaveEnoughElement else {
-            error = .incorrectExpression
-            return
+            return error = .incorrectExpression
         }
         guard !isZeroDivision else {
-            error = .zeroDivision
-            return
+            return error = .zeroDivision
         }
 
         let result = calculateOperation(with: elements)
@@ -180,8 +161,7 @@ class Calculator {
     /// - Parameter operationsToReduce: Pass in an array of string to use for calculation.
     /// - Returns: Int index of the operand.
     private func sortCalculationByPriority(for operationsToReduce: [String]) -> Int {
-        if let index = operationsToReduce.firstIndex(where: { $0 == Operand.multiply.rawValue ||
-                                                        $0 == Operand.divide.rawValue }) {
+        if let index = operationsToReduce.firstIndex(where: { $0 == Operand.multiply.rawValue || $0 == Operand.divide.rawValue }) {
             return index
         }
         return 1
@@ -196,10 +176,10 @@ class Calculator {
         // Iterate over operations while an operand present.
         var operationsToReduce = operationsToReduce
         while operationsToReduce.count > 1 {
-            let index = sortCalculationByPriority(for: operationsToReduce)
-            let operand = operationsToReduce[index]
-            if let left = Float(operationsToReduce[index - 1]),
-               let right = Float(operationsToReduce[index + 1]) {
+            let operandIndex = sortCalculationByPriority(for: operationsToReduce)
+            let operand = operationsToReduce[operandIndex]
+            if let left = Float(operationsToReduce[operandIndex - 1]),
+               let right = Float(operationsToReduce[operandIndex + 1]) {
                 let result: Float
                 switch operand {
                 case Operand.add.rawValue      : result = left + right
@@ -208,12 +188,12 @@ class Calculator {
                 case Operand.divide.rawValue   : result = left / right
                 default: return zeroValue
                 }
-                // Replace the value at operand index - 1 with the result.
-                operationsToReduce[index - 1] = "\(result)"
+                // Update the value at operand index - 1 with the result.
+                operationsToReduce[operandIndex - 1] = "\(result)"
                 // Remove value after the operand at index + 1.
-                operationsToReduce.remove(at: index + 1)
+                operationsToReduce.remove(at: operandIndex + 1)
                 // Remove the operand at index.
-                operationsToReduce.remove(at: index)
+                operationsToReduce.remove(at: operandIndex)
             }
         }
         guard let operation = operationsToReduce.first else {

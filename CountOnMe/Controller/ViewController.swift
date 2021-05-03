@@ -26,8 +26,7 @@ class ViewController: UIViewController {
     // MARK: - Actions
 
     /// Collection of number button actions.
-    ///
-    /// Button title label value is passed as a number.
+    /// Button title label value is passed as a number as string.
     /// - Parameter sender: number button.
     @IBAction func tappedNumberButton(_ sender: UIButton) {
         guard let numberText = sender.title(for: .normal) else {return}
@@ -35,7 +34,6 @@ class ViewController: UIViewController {
     }
 
     /// Collection of operand button actions.
-    ///
     /// Button title label value is passed as an operand.
     /// - Parameter sender: operand button
     @IBAction func tappedOperandButton(_ sender: UIButton) {
@@ -43,20 +41,20 @@ class ViewController: UIViewController {
         calculator.addOperand(with: " \(operandText) ")
     }
 
-    /// Button to calculate operation.
-    /// - Parameter sender: equal button.
+    /// Button action to calculate operation.
+    /// - Parameter sender: Equal button.
     @IBAction func tappedEqualButton(_ sender: UIButton) {
         calculator.calculatationRequest()
     }
 
-    /// Resets calculation and display a zero in the textiew.
-    /// - Parameter sender: reset button.
+    /// Reset button action.
+    /// - Parameter sender: Reset button.
     @IBAction func tappedResetButton(_ sender: Any) {
         calculator.resetCalculation()
     }
 
-    /// Adds a decimal point when user wants to make calculations with a decimal value.
-    /// - Parameter sender: decimal button.
+    /// Decimal button action.
+    /// - Parameter sender: Decimal button.
     @IBAction func tappedDecimalButton(_ sender: Any) {
         calculator.addDecimalSeparator()
     }
@@ -68,13 +66,13 @@ extension ViewController: CalculatorDelegate {
     /// Display calculation result.
     /// - Parameter result: calculation result as string.
     func displayResult(with result: String) {
-        textView.text = result
+            self.textView.text = result
     }
 
     /// Present an alert to the user  when an error occured.
     /// - Parameter error: custom error from Errors.
     func presentAlert(with error: CountError) {
-        let alertVC = UIAlertController(title: "Zéro!",
+        let alertVC = UIAlertController(title: "Oups!",
                                         message: error.description,
                                         preferredStyle: .alert)
         alertVC.addAction(UIAlertAction(title: "OK",

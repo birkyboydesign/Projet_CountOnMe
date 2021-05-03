@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// Operands used in the model. 
 enum Operand: String {
     case add       = "+"
     case multiply  = "x"
