@@ -31,7 +31,7 @@ class CalculatorTests: XCTestCase {
         // When
         sut.addOperand(with: " + ")
         sut.addNumber(with: "2")
-        sut.calculatationRequest()
+        sut.calculationRequest()
         // Then
         let result = "2 + 2 = 4"
         XCTAssertEqual(sut.stringToCalculate, result)
@@ -41,7 +41,7 @@ class CalculatorTests: XCTestCase {
         sut.addNumber(with: "3")
         sut.addOperand(with: " - ")
         sut.addNumber(with: "2")
-        sut.calculatationRequest()
+        sut.calculationRequest()
         let result = "3 - 2 = 1"
         XCTAssertEqual(sut.stringToCalculate, result)
     }
@@ -50,7 +50,7 @@ class CalculatorTests: XCTestCase {
         sut.addNumber(with: "3")
         sut.addOperand(with: " x ")
         sut.addNumber(with: "3")
-        sut.calculatationRequest()
+        sut.calculationRequest()
         let result = "3 x 3 = 9"
         XCTAssertEqual(sut.stringToCalculate, result)
     }
@@ -59,7 +59,7 @@ class CalculatorTests: XCTestCase {
         sut.addNumber(with: "4")
         sut.addOperand(with: " ÷ ")
         sut.addNumber(with: "2")
-        sut.calculatationRequest()
+        sut.calculationRequest()
         let result = "4 ÷ 2 = 2"
         XCTAssertEqual(sut.stringToCalculate, result)
     }
@@ -74,7 +74,7 @@ class CalculatorTests: XCTestCase {
         sut.addNumber(with: "2")
         sut.addOperand(with: " + ")
         sut.addNumber(with: "2")
-        sut.calculatationRequest()
+        sut.calculationRequest()
         let result = "4 ÷ 2 x 3 - 2 + 2 = 6"
         XCTAssertEqual(sut.stringToCalculate, result)
     }
@@ -85,7 +85,7 @@ class CalculatorTests: XCTestCase {
         sut.addNumber(with: "5")
         sut.addOperand(with: " + ")
         sut.addNumber(with: "2")
-        sut.calculatationRequest()
+        sut.calculationRequest()
         let result = "3.5 + 2 = 5.5"
         XCTAssertEqual(sut.stringToCalculate, result)
     }
@@ -98,7 +98,7 @@ class CalculatorTests: XCTestCase {
         sut.addNumber(with: "2")
         sut.addDecimalSeparator()
         sut.addNumber(with: "2")
-        sut.calculatationRequest()
+        sut.calculationRequest()
         let result = "3.5 + 2.2 = 5.7"
         XCTAssertEqual(sut.stringToCalculate, result)
     }
@@ -113,7 +113,7 @@ class CalculatorTests: XCTestCase {
         sut.addNumber(with: "2")
         sut.addOperand(with: " + ")
         sut.addNumber(with: "2")
-        sut.calculatationRequest()
+        sut.calculationRequest()
         sut.addNumber(with: "2")
         XCTAssertEqual(sut.stringToCalculate, "2")
     }
@@ -122,7 +122,7 @@ class CalculatorTests: XCTestCase {
         sut.addNumber(with: "2")
         sut.addOperand(with: " + ")
         sut.addNumber(with: "2")
-        sut.calculatationRequest()
+        sut.calculationRequest()
         sut.addDecimalSeparator()
         XCTAssertEqual(sut.stringToCalculate, "0")
     }
@@ -139,7 +139,7 @@ class CalculatorTests: XCTestCase {
     func testGivenNumber_WhenNothingToAddTo_ThenShowError() {
         sut.addNumber(with: "2")
         sut.addOperand(with: " + ")
-        sut.calculatationRequest()
+        sut.calculationRequest()
         XCTAssertEqual(sut.stringToCalculate, "2 + ")
         XCTAssertEqual(sut.error?.description, CountError.incorrectExpression.description)
     }
@@ -147,7 +147,7 @@ class CalculatorTests: XCTestCase {
     func testGivenAStringWithANumber_WhenNothingToSubstractWith_ThenShowError() {
         sut.addNumber(with: "2")
         sut.addOperand(with: " - ")
-        sut.calculatationRequest()
+        sut.calculationRequest()
         XCTAssertEqual(sut.stringToCalculate, "2 - ")
         XCTAssertEqual(sut.error?.description, CountError.incorrectExpression.description)
     }
@@ -155,7 +155,7 @@ class CalculatorTests: XCTestCase {
     func testGivenAStringWithANumber_WhenNothingToMultiplyBy_ThenShowError() {
         sut.addNumber(with: "2")
         sut.addOperand(with: " x ")
-        sut.calculatationRequest()
+        sut.calculationRequest()
         XCTAssertEqual(sut.stringToCalculate, "2 x ")
         XCTAssertEqual(sut.error?.description, CountError.incorrectExpression.description)
     }
@@ -163,7 +163,7 @@ class CalculatorTests: XCTestCase {
     func testGivenAStringWithANumber_WhenNothingToDivideBy_ThenShowError() {
         sut.addNumber(with: "2")
         sut.addOperand(with: " ÷ ")
-        sut.calculatationRequest()
+        sut.calculationRequest()
         XCTAssertEqual(sut.stringToCalculate, "2 ÷ ")
         XCTAssertEqual(sut.error?.description, CountError.incorrectExpression.description)
     }
@@ -172,14 +172,14 @@ class CalculatorTests: XCTestCase {
         sut.addNumber(with: "2")
         sut.addOperand(with: " ÷ ")
         sut.addNumber(with: "0")
-        sut.calculatationRequest()
+        sut.calculationRequest()
         XCTAssertEqual(sut.stringToCalculate, "2 ÷ 0")
         XCTAssertEqual(sut.error?.description, CountError.zeroDivision.description)
     }
 
     func testGivenStringHasNumber_WhenNoOperand_ThenShowError() {
         sut.addNumber(with: "2")
-        sut.calculatationRequest()
+        sut.calculationRequest()
         XCTAssertEqual(sut.error?.description, CountError.incorrectExpression.description)
     }
 
@@ -194,7 +194,7 @@ class CalculatorTests: XCTestCase {
         sut.addNumber(with: "2")
         sut.addOperand(with: " + ")
         sut.addNumber(with: "2")
-        sut.calculatationRequest()
+        sut.calculationRequest()
         sut.addOperand(with: " + ")
         XCTAssertEqual(sut.error?.description, CountError.resultAlreadyShowing.description)
     }
@@ -203,8 +203,8 @@ class CalculatorTests: XCTestCase {
         sut.addNumber(with: "2")
         sut.addOperand(with: " + ")
         sut.addNumber(with: "2")
-        sut.calculatationRequest()
-        sut.calculatationRequest()
+        sut.calculationRequest()
+        sut.calculationRequest()
         XCTAssertEqual(sut.error?.description, CountError.resultAlreadyShowing.description)
     }
 
@@ -216,7 +216,7 @@ class CalculatorTests: XCTestCase {
         sut.addNumber(with: "2")
         sut.addOperand(with: " + ")
         sut.addNumber(with: "2")
-        sut.calculatationRequest()
+        sut.calculationRequest()
         XCTAssertEqual(sut.error?.description, CountError.incorrectExpression.description)
     }
 
