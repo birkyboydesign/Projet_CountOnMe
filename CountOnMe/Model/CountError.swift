@@ -13,7 +13,6 @@ public enum CountError: LocalizedError {
     case incorrectExpression
     case zeroDivision
     case resultAlreadyShowing
-    case infiniteResult
     case firstIsOperand
 
      var description: String {
@@ -26,8 +25,6 @@ public enum CountError: LocalizedError {
             return "Division par zéro impossible !"
         case .resultAlreadyShowing:
             return "Le resultat est déja affiché !"
-        case .infiniteResult:
-            return "Resultat infini !"
         case .firstIsOperand:
             return "Veuillez commencer par entrer un nombre !"
         }

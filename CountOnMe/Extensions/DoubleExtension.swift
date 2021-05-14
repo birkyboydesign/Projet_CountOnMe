@@ -9,7 +9,7 @@
 import Foundation
 
 
-extension Float {
+extension Double {
     // MARK:  - Result Formatter
 
     /// Format result displayed to the user. If result is a is whole number then no digiti is displayed.
@@ -20,7 +20,7 @@ extension Float {
         formatter.numberStyle = .decimal
         formatter.maximumFractionDigits = 2
         formatter.decimalSeparator = "."
-        formatter.groupingSeparator = ""
+        formatter.groupingSeparator = ","
         let number = NSNumber(value: self)
         let formattedValue = formatter.string(from: number)!
         return formattedValue

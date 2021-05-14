@@ -143,25 +143,10 @@ class Calculator {
         }
 
         let result = calculateOperation(with: elements)
-        if let resultToFloat = Float(result) {
-            guard !resultToFloat.isInfinite else {
-                return error = .infiniteResult
-            }
+        if let resultToFloat = Double(result) {
             let formattedResult = resultToFloat.formatResult()
             stringToCalculate.append(" = \(formattedResult)")
         }
-    }
-
-    /// Iterate thru array of strings and search for the first index where the operand 'x' or '÷' is present.
-    ///
-    /// If no 'x' or '÷' operand found, returns default operand index of 1.
-    /// - Parameter operationsToReduce: Pass in an array of string to use for calculation.
-    /// - Returns: Int index of the operand.
-    private func sortCalculationByPriority(for operationsToReduce: [String]) -> Int {
-        if let index = operationsToReduce.firstIndex(where: { $0 == Operand.multiply.rawValue || $0 == Operand.divide.rawValue }) {
-            return index
-        }
-        return 1
     }
 
     /// Iterate thru an array of string to perform calculations.
@@ -172,12 +157,16 @@ class Calculator {
     private func calculateOperation(with operationsToReduce: [String]) -> String {
         // Iterate over operations while an operand present.
         var operationsToReduce = operationsToReduce
+
         while operationsToReduce.count > 1 {
-            let operandIndex = sortCalculationByPriority(for: operationsToReduce)
-            let operand = operationsToReduce[operandIndex]
-            if let left = Float(operationsToReduce[operandIndex - 1]),
-               let right = Float(operationsToReduce[operandIndex + 1]) {
-                let result: Float
+            var index = 1
+            if let operandIndex = operationsToReduce.firstIndex(where: { $0 == Operand.multiply.rawValue || $0 == Operand.divide.rawValue }) {
+                index = operandIndex
+            }
+            let operand = operationsToReduce[index]
+            if let left = Double(operationsToReduce[index - 1]),
+               let right = Double(operationsToReduce[index + 1]) {
+                let result: Double
                 switch operand {
                 case Operand.add.rawValue      : result = left + right
                 case Operand.substract.rawValue: result = left - right
@@ -186,11 +175,13 @@ class Calculator {
                 default: return zeroValue
                 }
                 // Update the value at operand index - 1 with the result.
-                operationsToReduce[operandIndex - 1] = "\(result)"
+                print("\(result.formatResult())")
+                print(stringToCalculate)
+                operationsToReduce[index - 1] = "\(result)"
                 // Remove value after the operand at index + 1.
-                operationsToReduce.remove(at: operandIndex + 1)
+                operationsToReduce.remove(at: index + 1)
                 // Remove the operand at index.
-                operationsToReduce.remove(at: operandIndex)
+                operationsToReduce.remove(at: index)
             }
         }
         guard let operation = operationsToReduce.first else {
@@ -198,6 +189,7 @@ class Calculator {
         }
         return operation
     }
+
 
 
     func resetCalculation() {

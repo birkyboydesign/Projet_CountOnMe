@@ -134,19 +134,19 @@ class CalculatorTests: XCTestCase {
         XCTAssertEqual(sut.stringToCalculate, "2.")
     }
 
+    func testGivenNumber_WhenMultiplyWithBigNumber_ThenShowInfiniteError() {
+        sut.addNumber(with: "2")
+        sut.addOperand(with: " x ")
+        sut.addNumber(with: "888888888888888888888888888888888888888888888888888888888888888888888888888888888")
+        sut.calculationRequest()
+        XCTAssertEqual(sut.stringToCalculate, "2 x 888888888888888888888888888888888888888888888888888888888888888888888888888888888 = 1,777,777,777,777,777,800,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000")
+    }
+
     // MARK: - Test when error
 
     func testGivenNoNumberEntered_WhenAddingOperand_ThenShowError() {
         sut.addOperand(with: " - ")
         XCTAssertEqual(sut.error?.description, CountError.firstIsOperand.description)
-    }
-
-    func testGivenNumber_WhenMultiplyWithBigNumber_ThenShowInfiniteError() {
-        sut.addNumber(with: "2")
-        sut.addOperand(with: " x ")
-        sut.addNumber(with: "88888888888888888888888888888888888888888888888888")
-        sut.calculationRequest()
-        XCTAssertEqual(sut.error?.description, CountError.infiniteResult.description)
     }
 
     func testGivenNumber_WhenNothingToAddTo_ThenShowError() {
