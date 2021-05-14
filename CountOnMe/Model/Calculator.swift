@@ -142,7 +142,7 @@ class Calculator {
             return error = .zeroDivision
         }
 
-        let result = calculateOperation(with: elements)
+        let result = calculateOperation()
         if let resultToFloat = Double(result) {
             let formattedResult = resultToFloat.formatResult()
             stringToCalculate.append(" = \(formattedResult)")
@@ -154,9 +154,9 @@ class Calculator {
     /// Sort Calculation by operand priority, divisions and multiplications are perfomed first.
     /// - Parameter operationsToReduce: Array of strings.
     /// - Returns: Result as a string.
-    private func calculateOperation(with operationsToReduce: [String]) -> String {
+    private func calculateOperation() -> String {
         // Iterate over operations while an operand present.
-        var operationsToReduce = operationsToReduce
+        var operationsToReduce = elements
 
         while operationsToReduce.count > 1 {
             var index = 1
@@ -175,8 +175,6 @@ class Calculator {
                 default: return zeroValue
                 }
                 // Update the value at operand index - 1 with the result.
-                print("\(result.formatResult())")
-                print(stringToCalculate)
                 operationsToReduce[index - 1] = "\(result)"
                 // Remove value after the operand at index + 1.
                 operationsToReduce.remove(at: index + 1)
@@ -189,8 +187,6 @@ class Calculator {
         }
         return operation
     }
-
-
 
     func resetCalculation() {
         stringToCalculate = zeroValue
