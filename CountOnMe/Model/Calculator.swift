@@ -126,7 +126,6 @@ class Calculator {
         stringToCalculate.append(decimalSeparator)
     }
 
-
     // MARK: - Calculations
 
     /// Request a calculation and update the string to calculate with result
@@ -145,14 +144,11 @@ class Calculator {
 
         let result = calculateOperation(with: elements)
         if let resultToFloat = Float(result) {
-           if !resultToFloat.isInfinite {
-                let formattedResult = resultToFloat.formatResult()
-                stringToCalculate.append(" = \(formattedResult)")
-                print(formattedResult)
-            } else {
-                error = .infiniteResult
+            guard !resultToFloat.isInfinite else {
+                return error = .infiniteResult
             }
-
+            let formattedResult = resultToFloat.formatResult()
+            stringToCalculate.append(" = \(formattedResult)")
         }
     }
 
