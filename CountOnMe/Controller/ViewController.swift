@@ -23,7 +23,6 @@ class ViewController: UIViewController {
         calculator.delegate = self
     }
 
-
     // MARK: - Actions
 
     /// Collection of number button actions.

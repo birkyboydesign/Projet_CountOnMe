@@ -136,6 +136,19 @@ class CalculatorTests: XCTestCase {
 
     // MARK: - Test when error
 
+    func testGivenNoNumberEntered_WhenAddingOperand_ThenShowError() {
+        sut.addOperand(with: " - ")
+        XCTAssertEqual(sut.error?.description, CountError.firstIsOperand.description)
+    }
+
+    func testGivenNumber_WhenMultiplyWithBigNumber_ThenShowInfiniteError() {
+        sut.addNumber(with: "2")
+        sut.addOperand(with: " x ")
+        sut.addNumber(with: "88888888888888888888888888888888888888888888888888")
+        sut.calculationRequest()
+        XCTAssertEqual(sut.error?.description, CountError.infiniteResult.description)
+    }
+
     func testGivenNumber_WhenNothingToAddTo_ThenShowError() {
         sut.addNumber(with: "2")
         sut.addOperand(with: " + ")
