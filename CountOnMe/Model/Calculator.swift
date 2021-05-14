@@ -144,48 +144,66 @@ class Calculator {
 
         let result = calculateOperation()
         if let resultToFloat = Double(result) {
+
             let formattedResult = resultToFloat.formatResult()
             stringToCalculate.append(" = \(formattedResult)")
         }
     }
 
-    /// Iterate thru an array of string to perform calculations.
-    ///
-    /// Sort Calculation by operand priority, divisions and multiplications are perfomed first.
-    /// - Parameter operationsToReduce: Array of strings.
+    /// Iterate thru an array of string to perform  addition and substractions calculations.
+    /// - Parameter operationsToReduce: Array of strings created after divsions and multiplications are done first.
     /// - Returns: Result as a string.
     private func calculateOperation() -> String {
         // Iterate over operations while an operand present.
-        var operationsToReduce = elements
+        var operationsToReduce = calculateDivisionAndMultiplication()
 
         while operationsToReduce.count > 1 {
-            var index = 1
-            if let operandIndex = operationsToReduce.firstIndex(where: { $0 == Operand.multiply.rawValue || $0 == Operand.divide.rawValue }) {
-                index = operandIndex
-            }
-            let operand = operationsToReduce[index]
-            if let left = Double(operationsToReduce[index - 1]),
-               let right = Double(operationsToReduce[index + 1]) {
+            let operand = operationsToReduce[1]
+            if let left = Double(operationsToReduce[0]),
+               let right = Double(operationsToReduce[2]) {
                 let result: Double
                 switch operand {
                 case Operand.add.rawValue      : result = left + right
                 case Operand.substract.rawValue: result = left - right
-                case Operand.multiply.rawValue : result = left * right
-                case Operand.divide.rawValue   : result = left / right
-                default: return zeroValue
+                default: fatalError("Unknown operator !")
                 }
-                // Update the value at operand index - 1 with the result.
-                operationsToReduce[index - 1] = "\(result)"
-                // Remove value after the operand at index + 1.
-                operationsToReduce.remove(at: index + 1)
-                // Remove the operand at index.
-                operationsToReduce.remove(at: index)
+                operationsToReduce = Array(operationsToReduce.dropFirst(3))
+                operationsToReduce.insert("\(result)", at: 0)
             }
         }
         guard let operation = operationsToReduce.first else {
             return zeroValue
         }
         return operation
+    }
+
+    /// Calculate divisions and multiplications in priority.
+    /// - Returns: Array of string of with all priority calculations done.
+    private func calculateDivisionAndMultiplication() -> [String] {
+        var operationsToReduce = elements
+
+        while operationsToReduce.contains(Operand.divide.rawValue) ||
+                operationsToReduce.contains(Operand.multiply.rawValue) {
+            if let index = operationsToReduce.firstIndex(where: { $0 == Operand.multiply.rawValue || $0 == Operand.divide.rawValue }) {
+                let operand = operationsToReduce[index]
+                if let left = Double(operationsToReduce[index - 1]),
+                   let right = Double(operationsToReduce[index + 1]) {
+                    var result = Double()
+                    switch operand {
+                    case Operand.multiply.rawValue : result = left * right
+                    case Operand.divide.rawValue   : result = left / right
+                    default: break
+                    }
+                    // Update the value at operand index - 1 with the result.
+                    operationsToReduce[index - 1] = "\(result)"
+                    // Remove value after the operand at index + 1.
+                    operationsToReduce.remove(at: index + 1)
+                    // Remove the operand at index.
+                    operationsToReduce.remove(at: index)
+                }
+            }
+        }
+        return operationsToReduce
     }
 
     func resetCalculation() {
