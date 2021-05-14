@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import SwiftUI
 
 protocol CalculatorDelegate: AnyObject {
     func presentAlert(with error: CountError)
@@ -19,7 +18,7 @@ class Calculator {
     // MARK: - Properties
     weak var delegate: CalculatorDelegate?
     private let zeroValue = "0"
-    private let decimalSeparator = "."
+    private let decimalSeparator: String = "."
 
     /// String containing elements to calculate.
     /// Updates the UI via protocol delagate.
@@ -38,6 +37,7 @@ class Calculator {
     }
 
     /// Split string into parts and append to elements array.
+    /// Uses space around before and after operand as a separator
     private var elements: [String] {
         return stringToCalculate.split(separator: " ").map { "\($0)" }
     }
@@ -45,7 +45,7 @@ class Calculator {
     // MARK: - Checks
 
     /// Checks if the last value of elements array is an operand.
-    private var expressionIsCorrect: Bool {
+    private var lastElementIsNumber: Bool {
         return elements.last != Operand.add.rawValue &&
             elements.last != Operand.substract.rawValue &&
             elements.last != Operand.multiply.rawValue &&
@@ -57,7 +57,7 @@ class Calculator {
         return elements.count >= 3
     }
 
-    /// Check If the first index of the elements to calculate is not an equal sign, then there is no result.
+    /// Check If the first index of the elements to calculate is not an equal sign.
     private var expressionHaveResult: Bool {
         return elements.firstIndex(of: Operand.equal.rawValue) != nil
     }
@@ -79,8 +79,9 @@ class Calculator {
     }
 
     /// Checks if a decimal separator is already set for the last number entered
+    /// compare last stringToCalculate element to the first element of the decimalSeparator string.
     private var decimalSeparatorAlreadySet: Bool {
-        return stringToCalculate.last == "."
+        return stringToCalculate.last == decimalSeparator.first
     }
 
     /// Checks if one of the numbers has a two decimal separator
@@ -94,8 +95,6 @@ class Calculator {
 
     // MARK: - Add Data
 
-    /// Add number to the string to be calculated.
-    /// - Parameter number: String value passsed from number button.
     func addNumber(with number: String) {
         if expressionHaveResult {
             resetCalculation()
@@ -106,19 +105,19 @@ class Calculator {
         stringToCalculate.append(number)
     }
 
-    /// Add operand to string to be calculated.
-    /// - Parameter operand: String value of the operand button pressed.
     func addOperand(with operand: String) {
         guard !expressionHaveResult else {
             return error = .resultAlreadyShowing
         }
-        guard expressionIsCorrect else {
+        guard lastElementIsNumber else {
             return error = .operandAlreadySet
+        }
+        if stringToCalculate == zeroValue || stringToCalculate == "" {
+            return error = .firstIsOperand
         }
         stringToCalculate.append(operand)
     }
 
-    /// Add a decimal point to string.
     func addDecimalSeparator() {
         guard !expressionHaveResult else {
             return resetCalculation()
@@ -131,17 +130,13 @@ class Calculator {
     // MARK: - Calculations
 
     /// Request a calculation and update the string to calculate with result
-    func calculatationRequest() {
-        guard !numberAlreadyHasDecimalSeparator else {
-            return error = .incorrectExpression
-        }
+    func calculationRequest() {
         guard !expressionHaveResult else {
             return error = .resultAlreadyShowing
         }
-        guard expressionIsCorrect else {
-            return error = .incorrectExpression
-        }
-        guard expressionHaveEnoughElement else {
+        guard lastElementIsNumber,
+              expressionHaveEnoughElement,
+              !numberAlreadyHasDecimalSeparator else {
             return error = .incorrectExpression
         }
         guard !isZeroDivision else {
@@ -150,8 +145,14 @@ class Calculator {
 
         let result = calculateOperation(with: elements)
         if let resultToFloat = Float(result) {
-            let formattedResult = resultToFloat.formatResult()
-            stringToCalculate.append(" = \(formattedResult)")
+           if !resultToFloat.isInfinite {
+                let formattedResult = resultToFloat.formatResult()
+                stringToCalculate.append(" = \(formattedResult)")
+                print(formattedResult)
+            } else {
+                error = .infiniteResult
+            }
+
         }
     }
 
@@ -202,7 +203,7 @@ class Calculator {
         return operation
     }
 
-    /// Reset calculation by setting the stringToCalculate to zero.
+
     func resetCalculation() {
         stringToCalculate = zeroValue
     }
